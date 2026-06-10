@@ -15,7 +15,9 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 RUN php artisan config:clear || true
+RUN php artisan route:clear || true
+RUN php artisan view:clear || true
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
